@@ -10,6 +10,12 @@ WIDTH, HEIGHT = 800, 600
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 EARTH_GRAVITY = 9.81  # m/s^2
+MAX_THRUST = 1500000  # in Newtons
+BURN_RATE = 500  # fuel burn rate in kg/s
+TIME_STEP = 0.1  # simulation time step in seconds
+TILT_STEP = 0.02  # Tilt step for left/right movement
+MAX_TILT = 0.5  # Maximum tilt angle in radians (about 28.6 degrees)
+
 
 # Screen setup
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -77,6 +83,25 @@ class Rocket:
         elif self.x > WIDTH:
             self.x = WIDTH
             self.vx = 0
+
+def draw(self, screen, camera_offset):
+        rocket_rect = pygame.Rect(0, 0, 20, 50)
+        rocket_rect.center = (self.x, self.y + camera_offset)
+        rocket_surface = pygame.Surface(rocket_rect.size, pygame.SRCALPHA)
+        rocket_surface.fill(WHITE)
+        rotated_rocket = pygame.transform.rotate(rocket_surface, -math.degrees(self.angle))
+        rotated_rect = rotated_rocket.get_rect(center=rocket_rect.center)
+        screen.blit(rotated_rocket, rotated_rect.topleft)
+
+def increase_thrust(self):
+    if self.thrust < MAX_THRUST:
+        self.thrust += 100000  # Increase thrust in larger increments
+        print(f"Increased thrust: {self.thrust}")  # Debug print
+
+def decrease_thrust(self):
+    if self.thrust > 0:
+        self.thrust -= 100000  # Decrease thrust in larger increments
+        print(f"Decreased thrust: {self.thrust}")  # Debug print
 
 # Main game loop
 running = True
