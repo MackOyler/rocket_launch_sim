@@ -102,6 +102,29 @@ class Rocket:
         if self.thrust > 0:
             self.thrust -= 100000  # Decrease thrust in larger increments
             print(f"Decreased thrust: {self.thrust}")  # Debug print
+            
+    def tilt_left(self):
+        if self.angle < MAX_TILT:
+            self.angle += TILT_STEP
+            print(f"Tilted left: {math.degrees(self.angle)} degrees")  # Debug print
+
+    def tilt_right(self):
+        if self.angle > -MAX_TILT:
+            self.angle -= TILT_STEP
+            print(f"Tilted right: {math.degrees(self.angle)} degrees")  # Debug print
+
+def draw_sky(screen, height):
+    for i in range(height):
+        color_value = min(255, max(0, 255 - int(i * 255 / height)))
+        pygame.draw.line(screen, (color_value, color_value, 255), (0, i), (WIDTH, i))
+
+def draw_stars(screen, height):
+    for _ in range(50):
+        x = random.randint(0, WIDTH)
+        y = random.randint(0, height)
+        pygame.draw.circle(screen, WHITE, (x, y), 2)
+
+rocket = Rocket()
 
 # Main game loop
 running = True
@@ -109,3 +132,6 @@ camera_offset = 0  # Camera offset to follow the rocket
 
 while running:
     pass
+
+pygame.quit()
+sys.exit()
