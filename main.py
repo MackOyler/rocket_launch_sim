@@ -84,24 +84,24 @@ class Rocket:
             self.x = WIDTH
             self.vx = 0
 
-def draw(self, screen, camera_offset):
-        rocket_rect = pygame.Rect(0, 0, 20, 50)
-        rocket_rect.center = (self.x, self.y + camera_offset)
-        rocket_surface = pygame.Surface(rocket_rect.size, pygame.SRCALPHA)
-        rocket_surface.fill(WHITE)
-        rotated_rocket = pygame.transform.rotate(rocket_surface, -math.degrees(self.angle))
-        rotated_rect = rotated_rocket.get_rect(center=rocket_rect.center)
-        screen.blit(rotated_rocket, rotated_rect.topleft)
+    def draw(self, screen, camera_offset):
+            rocket_rect = pygame.Rect(0, 0, 20, 50)
+            rocket_rect.center = (self.x, self.y + camera_offset)
+            rocket_surface = pygame.Surface(rocket_rect.size, pygame.SRCALPHA)
+            rocket_surface.fill(WHITE)
+            rotated_rocket = pygame.transform.rotate(rocket_surface, -math.degrees(self.angle))
+            rotated_rect = rotated_rocket.get_rect(center=rocket_rect.center)
+            screen.blit(rotated_rocket, rotated_rect.topleft)
 
-def increase_thrust(self):
-    if self.thrust < MAX_THRUST:
-        self.thrust += 100000  # Increase thrust in larger increments
-        print(f"Increased thrust: {self.thrust}")  # Debug print
+    def increase_thrust(self):
+        if self.thrust < MAX_THRUST:
+            self.thrust += 100000  # Increase thrust in larger increments
+            print(f"Increased thrust: {self.thrust}")  # Debug print
 
-def decrease_thrust(self):
-    if self.thrust > 0:
-        self.thrust -= 100000  # Decrease thrust in larger increments
-        print(f"Decreased thrust: {self.thrust}")  # Debug print
+    def decrease_thrust(self):
+        if self.thrust > 0:
+            self.thrust -= 100000  # Decrease thrust in larger increments
+            print(f"Decreased thrust: {self.thrust}")  # Debug print
 
 # Main game loop
 running = True
