@@ -16,7 +16,6 @@ TIME_STEP = 0.1  # simulation time step in seconds
 TILT_STEP = 0.02  # Tilt step for left/right movement
 MAX_TILT = 0.5  # Maximum tilt angle in radians (about 28.6 degrees)
 
-
 # Screen setup
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Rocket Launch Simulation")
@@ -85,13 +84,13 @@ class Rocket:
             self.vx = 0
 
     def draw(self, screen, camera_offset):
-            rocket_rect = pygame.Rect(0, 0, 20, 50)
-            rocket_rect.center = (self.x, self.y + camera_offset)
-            rocket_surface = pygame.Surface(rocket_rect.size, pygame.SRCALPHA)
-            rocket_surface.fill(WHITE)
-            rotated_rocket = pygame.transform.rotate(rocket_surface, -math.degrees(self.angle))
-            rotated_rect = rotated_rocket.get_rect(center=rocket_rect.center)
-            screen.blit(rotated_rocket, rotated_rect.topleft)
+        rocket_rect = pygame.Rect(0, 0, 20, 50)
+        rocket_rect.center = (self.x, self.y + camera_offset)
+        rocket_surface = pygame.Surface(rocket_rect.size, pygame.SRCALPHA)
+        rocket_surface.fill(WHITE)
+        rotated_rocket = pygame.transform.rotate(rocket_surface, -math.degrees(self.angle))
+        rotated_rect = rotated_rocket.get_rect(center=rocket_rect.center)
+        screen.blit(rotated_rocket, rotated_rect.topleft)
 
     def increase_thrust(self):
         if self.thrust < MAX_THRUST:
@@ -102,7 +101,7 @@ class Rocket:
         if self.thrust > 0:
             self.thrust -= 100000  # Decrease thrust in larger increments
             print(f"Decreased thrust: {self.thrust}")  # Debug print
-            
+
     def tilt_left(self):
         if self.angle < MAX_TILT:
             self.angle += TILT_STEP
@@ -148,20 +147,40 @@ while running:
                 rocket.launch()
             elif event.key == pygame.K_a:
                 rocket.abort()
+
     screen.fill(BLACK)
 
     # Update rocket
     rocket.update()
-    
+
+    # Update camera offset
+    if rocket.y < HEIGHT // 2:
+        camera_offset = HEIGHT // 2 - rocket.y
+    else:
+        camera_offset = 0
+
     # Draw sky gradient
     draw_sky(screen, HEIGHT)
-    
+
+    # Draw stars if the rocket is high enough
+    if rocket.y < HEIGHT // 2:
+        draw_stars(screen, HEIGHT)
+
     # Draw ground
     pygame.draw.rect(screen, (34, 139, 34), (0, HEIGHT - 10, WIDTH, 10))
-    
+
     # Draw rocket with camera offset
     rocket.draw(screen, camera_offset)
-    
+
+    # Display thrust and other info
+    font = pygame.font.Font(None, 36)
+    thrust_text = font.render(f"Thrust: {rocket.thrust}", True, WHITE)
+    screen.blit(thrust_text, (10, 10))
+    fuel_text = font.render(f"Fuel: {rocket.fuel:.2f}", True, WHITE)
+    screen.blit(fuel_text, (10, 50))
+    altitude_text = font.render(f"Altitude: {HEIGHT - rocket.y:.2f}", True, WHITE)
+    screen.blit(altitude_text, (10, 90))
+
     # Update display
     pygame.display.flip()
 
