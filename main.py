@@ -131,7 +131,39 @@ running = True
 camera_offset = 0  # Camera offset to follow the rocket
 
 while running:
-    pass
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_UP:
+                rocket.increase_thrust()
+            elif event.key == pygame.K_DOWN:
+                rocket.decrease_thrust()
+            elif event.key == pygame.K_LEFT:
+                rocket.tilt_left()
+            elif event.key == pygame.K_RIGHT:
+                rocket.tilt_right()
+            elif event.key == pygame.K_SPACE:
+                print("Spacebar pressed")  # Debug print
+                rocket.launch()
+            elif event.key == pygame.K_a:
+                rocket.abort()
+    screen.fill(BLACK)
+
+    # Update rocket
+    rocket.update()
+    
+    # Draw sky gradient
+    draw_sky(screen, HEIGHT)
+    
+    # Draw ground
+    pygame.draw.rect(screen, (34, 139, 34), (0, HEIGHT - 10, WIDTH, 10))
+    
+    # Draw rocket with camera offset
+    rocket.draw(screen, camera_offset)
+    
+    # Update display
+    pygame.display.flip()
 
 pygame.quit()
 sys.exit()
